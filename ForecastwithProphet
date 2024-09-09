@@ -1,0 +1,29 @@
+# Install Prophet if you haven't
+!pip install prophet
+
+import pandas as pd
+from prophet import Prophet
+import matplotlib.pyplot as plt
+
+# Load the dummy data (you'll use the provided Excel)
+df = pd.read_excel('fpa_dummy_data.xlsx')
+
+# Prepare data for Prophet
+df_prophet = df[['Date', 'Revenue']].rename(columns={'Date': 'ds', 'Revenue': 'y'})
+
+# Initialize Prophet model
+model = Prophet()
+
+# Fit the model on historical revenue data
+model.fit(df_prophet)
+
+# Create future dates for the next 12 months
+future = model.make_future_dataframe(periods=12, freq='MS')
+
+# Predict the future revenue
+forecast = model.predict(future)
+
+# Plot forecast
+model.plot(forecast)
+plt.title('Revenue Forecast for Next 12 Months')
+plt.show()
