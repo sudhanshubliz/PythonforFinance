@@ -1,0 +1,72 @@
+import pandas as pd
+import dash
+from dash import dcc, html
+from dash.dependencies import Input, Output
+import plotly.graph_objs as go
+
+# Load the dummy data
+df = pd.read_excel('fpa_dummy_data.xlsx')
+
+# Initialize Dash app
+app = dash.Dash(__name__)
+
+# Layout of the dashboard
+app.layout = html.Div([
+    html.H1("FP&A Dashboard: Revenue vs. Expenses"),
+
+    dcc.Dropdown(
+        id='metric-dropdown',
+        options=[
+            {'label': 'Revenue', 'value': 'Revenue'},
+            {'label': 'Operating Expenses', 'value': 'Operating_Expenses'},
+            {'label': 'Marketing Expenses', 'value': 'Marketing_Expenses'},
+            {'label': 'R&D Expenses', 'value': 'R&D_Expenses'},
+            {'label': 'Net Income', 'value': 'Net_Income'}
+        ],
+        value='Revenue',
+        multi=False,
+        clearable=False,
+        style={'width': '50%'}
+    ),
+
+    dcc.Graph(id='line-chart'),
+
+    dcc.Slider(
+        id='month-slider',
+        min=0,
+        max=len(df)-1,
+        value=len(df)-1,
+        marks={i: str(df['Date'].dt.year.iloc[i]) for i in range(0, len(df), 50)},
+        step=None
+    )
+])
+
+# Callback to update the chart based on dropdown and slider input
+@app.callback(
+    Output('line-chart', 'figure'),
+    [Input('metric-dropdown', 'value'), Input('month-slider', 'value')]
+)
+def update_chart(selected_metric, selected_month):
+    filtered_df = df.iloc[:selected_month + 1]
+
+    figure = {
+        'data': [
+            go.Scatter(
+                x=filtered_df['Date'],
+                y=filtered_df[selected_metric],
+                mode='lines',
+                name=selected_metric
+            )
+        ],
+        'layout': go.Layout(
+            title=f'{selected_metric} Over Time',
+            xaxis={'title': 'Date'},
+            yaxis={'title': selected_metric},
+            hovermode='closest'
+        )
+    }
+    return figure
+
+# Run the app
+if __name__ == '__main__':
+    app.run_server(debug=True)
