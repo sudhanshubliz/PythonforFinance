@@ -1,0 +1,3 @@
+Generate Python code to create a Monte Carlo Simulator that could be used by finance analysts to help them simulate the return of investments of different start-up ideas.
+
+They can add certain assumptions and then it simulates all the possible scenarios and creates amazing data visualizations
