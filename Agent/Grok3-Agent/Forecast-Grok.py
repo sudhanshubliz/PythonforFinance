@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 from prophet import Prophet
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
-from pmdarima import auto_arima
+from statsmodels.tsa.arima.model import ARIMA
 from groq import Groq
 import os
 from dotenv import load_dotenv
@@ -77,9 +77,11 @@ if uploaded_file:
                     forecasts['Prophet'] = forecast_tail
 
                 elif model == "ARIMA":
-                    arima_model = auto_arima(df['revenue'], seasonal=True, 
-                                            m=12 if frequency == "Monthly" else 4 if frequency == "Quarterly" else 1)
-                    forecast_arima = arima_model.predict(n_periods=horizon)
+                    # Basic ARIMA implementation using statsmodels (no auto_arima)
+                    arima_model = ARIMA(df['revenue'], order=(1, 1, 1), 
+                                       seasonal_order=(1, 1, 1, 12 if frequency == "Monthly" else 4 if frequency == "Quarterly" else 1))
+                    arima_fit = arima_model.fit()
+                    forecast_arima = arima_fit.forecast(steps=horizon)
                     future_dates = pd.date_range(start=df.index[-1] + pd.DateOffset(1), periods=horizon, freq=frequency[0])
                     forecast_df = pd.DataFrame({'ds': future_dates, 'yhat': forecast_arima})
                     forecasts['ARIMA'] = forecast_df
