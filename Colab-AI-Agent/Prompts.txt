@@ -1,0 +1,13 @@
+How to Use the Data Science Agent in Google Colab:
+Open a New Notebook: Start by launching a blank Colab notebook.
+
+Upload Your Data: Import your dataset into the notebook, whether it’s a CSV or Excel file.
+
+Define Your Objectives: In the Gemini side panel, specify the type of analysis or model you need using natural language prompts, such as "Visualize trends" or "Build and optimize a prediction model."
+
+Execute the Generated Notebook: The Data Science Agent will generate the necessary code, import relevant libraries, and execute the required analysis, providing you with a fully functional Colab notebook ready for further exploration and refinement.
+
+
+Prompt: "Generate a full Discounted Cash Flow (DCF) model for a SaaS company in Google Colab. The model should forecast financials for 5 years with the following assumptions: 20% annual revenue growth, 40% COGS, 30% operating expenses, 5% capital expenditures, 4% depreciation, and 2% change in net working capital. Use a 12% discount rate and a 3% terminal growth rate. Compute free cash flows, apply discounting, and calculate enterprise value. Output the results as a structured Pandas DataFrame and export it as an Excel file."
+
+Prompt: Act as a Head of FP&A (Financial Planning & Analysis) and conduct a comprehensive analysis of this dataset. Identify key financial trends, variances, and insights related to revenue, expenses, profitability, and cash flow. Highlight any anomalies, risks, or opportunities for cost savings and revenue growth. Provide visualizations where relevant and actionable recommendations based on your findings.
